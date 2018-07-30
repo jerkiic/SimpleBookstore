@@ -1,0 +1,44 @@
+{
+  "page" : {
+    "size" : 4,
+    "totalElements" : 4,
+    "totalPages" : 1,
+    "number" : 0
+  },
+  "_embedded": {
+    "data": [
+      {
+        "fruit": "strawberry",
+        "color": "pink",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
+      },
+      {
+        "color": "orange",
+        "fruit": "orange",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
+      },
+      {
+        "fruit": "apple",
+        "color": "green",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
+      },
+      {
+        "color": "yellow",
+        "fruit": "banana",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
+      }
+    ]
+  }
+}

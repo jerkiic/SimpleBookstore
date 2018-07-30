@@ -1,0 +1,28 @@
+{
+  "page" : {
+    "size" : 2,
+    "totalElements" : 4,
+    "totalPages" : 2,
+    "number" : 1
+  },
+  "_embedded": {
+    "data": [
+      {
+        "color": "orange",
+        "fruit": "orange",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
+      },
+      {
+        "fruit": "strawberry",
+        "color": "pink",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
+      }
+    ]
+  }
+}

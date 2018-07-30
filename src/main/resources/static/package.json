@@ -1,0 +1,11 @@
+{
+	"name": "Simple-Bookstore",
+	"version": "0.0.1",
+	"description": "Simple Bookstore",
+	"dependencies": {
+		"bower": "~1.3.12"
+	},
+	"engines": {
+		"node": ">=0.10.0"
+	}
+}

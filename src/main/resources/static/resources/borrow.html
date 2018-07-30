@@ -1,0 +1,95 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-column.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import"  href="../bower_components/app-layout/app-layout.html">
+
+<dom-module id="borrow-ui">
+	<template>
+		<style>
+			.content{
+		        	display:flex;
+		        	flex-direction:column;
+		        	padding:20px;
+		        	width:70%
+		        }	
+		    .returnBtn{
+				    height: 36px;
+				    width: 90px;
+				    background: #6d6334;
+				}
+		</style>
+		<app-layout>
+			<h1>Your Borrowed Books</h1>
+		</app-layout>
+		<div class = "content">
+			<vaadin-grid id="displayAllBooksTable" items="{{books}}">
+				<vaadin-grid-column width="35%">
+					<template class="header">Title</template>
+					<template>{{item.title}}</template>
+				</vaadin-grid-column>
+				<vaadin-grid-column	width="35%">
+					<template class="header">Author</template>
+					<template>{{item.author}}</template>
+				</vaadin-grid-column>
+				<vaadin-grid-column width="10px">
+					<template class="header"></template>
+					<template>
+					<paper-button raised class="returnBtn" on-tap="_returnBook" id="{{item.id}}">Return</paper-button>
+					</template>
+				</vaadin-grid-column>
+			</vaadin-grid>
+		</div>
+		
+		<iron-ajax
+			auto
+			id="displayBrwBooks"
+			method="GET"
+			content-type="application/json"
+			url="books/all/borrowed/{{borrowerId}}"
+			last-response="{{books}}"></iron-ajax>
+		<iron-ajax
+			auto
+			id="getToken"
+			method="GET"
+			content-type="application/json"
+			url="login/token"
+			on-response="_consoleTok"
+			></iron-ajax>	
+		<iron-ajax
+			id="returnBook"
+			method="POST"
+			content-type="application/json"
+			url="books/return"
+			on-response ="_handleResponse"></iron-ajax>
+	</template>
+	<script>
+		Polymer({
+			is: 'borrow-ui',
+			
+			borrowerId: {
+    			type: Number,
+    			notify: true
+    		},
+			
+			_returnBook: function(e) {
+	    		var id = e.currentTarget.getAttribute("id");
+	    		this.$.returnBook.body = JSON.stringify(id);
+	    		console.log(this.$.returnBook.body);
+	    		this.$.returnBook.generateRequest();
+	    	},
+	    	
+	    	_handleResponse: function(){
+	    		this.$.displayBrwBooks.generateRequest();
+	    	},
+	    	
+	    	_consoleTok: function(e){
+	    		/* console.log(e.detail.response); */
+	    		this.set("borrowerId",e.detail.response.id);
+	    		this.set("token",e.detail.response.role);
+	    	}
+		});
+	</script>
+</dom-module>

@@ -1,0 +1,67 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="admin.html">
+<link rel="import" href="main.html">
+<link rel="import" href="borrow.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
+<dom-module id="navigator-ui">
+	<template>	
+		<paper-tabs selected="{{selectedPage}}" attr-for-selected="tab-name">
+			<paper-tab tab-name="list">List of Books</paper-tab>
+			<template is="dom-if" if="{{_equals(token,'user')}}">
+				<paper-tab tab-name="brwBooks">Your Books</paper-tab>
+			</template>
+		</paper-tabs>
+		<iron-lazy-pages selected="{{selectedPage}}" attr-for-selected="page-name">
+		 	<template is="dom-if" if="{{_equals(selectedPage,'list')}}"	restamp>
+		 		<div page-name="list">
+					<main-ui id="mainId"></main-ui>
+				</div>
+			</template>
+			<template is="dom-if" if="{{_equals(selectedPage,'brwBooks')}}"	restamp>
+				<div page-name="brwBooks">
+					<borrow-ui id="brwBookId"></borrow-ui>
+				</div>
+			</template>
+		</iron-pages>
+	<iron-ajax
+			auto
+			id="getToken"
+			method="GET"
+			content-type="application/json"
+			url="login/token"
+			on-response="_consoleTok"
+			></iron-ajax>	
+	</template>
+		<script>
+			Polymer({
+				is: 'navigator-ui',
+				
+				properties: {
+					token:{
+						type: String,
+						notify: true
+					}
+				},
+				
+				 properties: {
+				        selectedPage: String
+				 },
+				 
+				 ready: function() {
+			        	this.set("selectedPage", "list");
+				 },
+				 
+				 _equals: function(a, b) {
+		                return a == b;
+		         },
+		         
+		         _consoleTok: function(e){
+			    		/* console.log(e.detail.response); */
+			    		this.set("token",e.detail.response.role); 
+				},
+			});
+		</script>
+</dom-module>
+

@@ -1,0 +1,50 @@
+{
+  "name": "paper-datatable-api",
+  "version": "2.0.18",
+  "description": "A material design implementation of a data table",
+  "authors": [
+    "Julien Rousseau <RoXuS>"
+  ],
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "datatable",
+    "grid",
+    "table"
+  ],
+  "main": "dist/paper-datatable-api.html",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.0",
+    "paper-item": "PolymerElements/paper-item#^2.0.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
+    "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^2.0.0",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.0",
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^2.0.0",
+    "range-datepicker": "~0.0.15"
+  },
+  "devDependencies": {
+    "paper-menu-button": "PolymerElements/paper-menu-button#2.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#2.0.0",
+    "paper-card": "PolymerElements/paper-card#2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#2.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.0.0",
+    "web-component-tester": "6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.1",
+    "iron-ajax": "PolymerElements/iron-ajax#2.0.0",
+    "paper-header-panel": "PolymerElements/paper-header-panel#2.0.0",
+    "polymerfire": "firebase/polymerfire#2.0.0",
+    "moment": "^2.18.1"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0-rc.3"
+  }
+}

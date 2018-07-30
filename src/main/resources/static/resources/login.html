@@ -1,0 +1,69 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="navigator.html">
+
+<dom-module id="login-ui">
+	<template>
+		<style>
+			:root {
+				--paper-button: {
+			        	padding: 13px;
+			        	background: #454e92d9;
+    					color: #e8e8db;
+				}
+			}
+		</style>
+		<template is="dom-if" if="{{!hasLogged}}">
+			<app-layout>
+				<h1>Login As</h1>
+			</app-layout>
+			<div class="buttons">
+				<paper-button on-tap="_loginAsUser">User</paper-button>
+				<paper-button on-tap="_loginAsAdmin">Admin</paper-button>
+			</div>
+		</template>
+		<iron-ajax
+			id="loginUser"
+			method="GET"
+			content-type="application/json"
+			url="/login/user"
+			on-response="_responseLogin"></iron-ajax>
+			
+		<iron-ajax 
+			id="loginAdmin"
+			method="GET"
+			content-type="application/json"
+			url="/login/admin"
+			on-response="_responseLogin"></iron-ajax>
+		<template is="dom-if" if="{{hasLogged}}">
+			<navigator-ui></navigator-ui>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'login-ui',
+			
+			properties:{
+				hasLogged:{
+					type: String,
+					value: false
+				}
+			},
+			
+			_loginAsUser: function(){
+				this.$.loginUser.generateRequest();
+			},
+			
+			_loginAsAdmin: function(){
+				this.$.loginAdmin.generateRequest();
+			},
+			
+			_responseLogin: function(){
+				console.log("logging in");
+				this.set("hasLogged", true);
+			}
+		});
+	</script>
+</dom-module>

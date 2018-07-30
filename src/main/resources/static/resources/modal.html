@@ -1,0 +1,67 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="modal-ui">
+	<template>
+		<style>
+			.dialog{
+		        	width:35%;
+			}
+		   	.form{
+				padding:30px;
+				width
+			}
+			.buttons{
+				padding:24px;
+			}
+			.accept{
+				color: #159e3a;
+				background: #f9f9f9
+			}
+			.dismiss{
+				background: #f9f9f9;
+				color: #ec4f4f
+			}	
+		</style>
+		
+			<h3>Add a book</h3>
+			<div class="form">
+				<div id="form">
+					<paper-input name="title" id="title" label="Title"></paper-input>
+					<paper-input name="author" id="author" label="Author"></paper-input>
+				</div>
+				<div class="buttons">
+				    <paper-button class="dismiss" dialog-dismiss on-tap="_cancel">Cancel</paper-button>
+				    <paper-button class="accept" dialog-confirm on-tap="_submit">Add</paper-button>
+				</div>
+		  	</div>
+		
+		<iron-ajax
+			id="addBook"
+			method="POST"
+			on-response="_handleResponse"
+			content-type="application/json"
+			url="books/add"></iron-ajax>
+	</template>
+	<script>
+		Polymer:({
+			is: "modal-ui",
+			
+			_submit: function(){
+	    		var addBookRequest = {};
+	    		addBookRequest.title = this.$.title.value;
+	    		addBookRequest.author= this.$.author.value;
+	    		this.$.title.value=null;
+	    		this.$.author.value=null;
+	    		console.log(addBookRequest);
+	    		
+	    		this.$.addBook.body = JSON.stringify(addBookRequest);
+	    		this.$.addBook.generateRequest(); 
+	    	},
+	    	
+	    	_cancel: function(){
+	    		this.$.title.value=null;
+	    		this.$.author.value=null;
+	    	},
+		});
+	</script>
+</dom-module>
