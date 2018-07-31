@@ -87,7 +87,7 @@ public class BookService {
 	@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor=BookNotFoundException.class)
 	public Book deleteBook(Long id) {
 		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
-		LOGGER.info("Admin is deleting the book:"+book.getTitle());
+		LOGGER.info("Admin is deleting the book: "+book.getTitle());
 		book.setStatus(false);
 		return bookRepo.save(book);
 	}

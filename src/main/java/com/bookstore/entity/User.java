@@ -29,6 +29,10 @@ public class User {
 	inverseJoinColumns= {@JoinColumn(name="book_id",referencedColumnName="id")})
 	private List<Book> borrowedBooks;
 	
+	
+/*//	@JsonProperty("role")
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+//    @JsonIdentityReference(alwaysAsId = true)
 //	@ManyToMany(cascade=CascadeType.ALL)
 //	@JoinTable(
 //			name="user_roles",
@@ -36,8 +40,17 @@ public class User {
 //					name = "user_id", referencedColumnName = "id"),
 //			inverseJoinColumns = @JoinColumn(
 //					name = "role_id", referencedColumnName = "id"))	
-//	private Set<Role> roles;
+//	private Set<Role> role;
 	
+//	@JsonIgnore
+//	public Set<Role> getRole() {
+//		return role;
+//	}
+//	@JsonIgnore
+//	public void setRoles(Set<Role> role) {
+//		this.role = role;
+//	}
+*/
 	@JsonIgnore
 	public List<Book> getBook() {
 		return borrowedBooks;

@@ -121,21 +121,21 @@
 			method="POST"
 			on-response="_handleResponse"
 			content-type="application/json"
-			url="books/add"
+			url="books/admin/add"
 			></iron-ajax>
 		<iron-ajax
 			id="borrowBook"
 			method="PUT"
 			on-response="_handleResponse"
 			content-type="application/json"
-			url="books/borrowuser/{{borrowerId}}"
+			url="books/user/borrowuser/{{borrowerId}}"
 			></iron-ajax>
 		<iron-ajax
 			id="deleteBook"
 			method="PUT"
 			on-response="_handleResponse"
 			content-type="application/json"
-			url="books/delete"
+			url="books/admin/delete"
 			></iron-ajax>
 	</template>
 	<script>

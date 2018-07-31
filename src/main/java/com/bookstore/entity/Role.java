@@ -11,13 +11,13 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+    private String role;
 
     public Role() {
     }
 
     public Role(String name) {
-        this.name = name;
+        this.role = name;
     }
 
     public Long getId() {
@@ -29,18 +29,18 @@ public class Role {
     }
 
     public String getName() {
-        return name;
+        return role;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.role = name;
     }
 
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + role + '\'' +
                 '}';
     }
 }

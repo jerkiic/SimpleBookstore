@@ -29,31 +29,31 @@ public class BookController {
         return bookService.findAll();
     }
 	
-	@RequestMapping(value="/all/borrowed/{id}")
+	@RequestMapping(value="/user/all/borrowed/{id}")
     public List<Book> findAllBorrowedBook(@PathVariable Long id) {
 		LOGGER.info("Find all borrowed book/s by a user");
         return bookService.findAllBorrowedBook(id);
     }
 	
-	@RequestMapping(value = "/add", method= RequestMethod.POST)
-	public Book addBook(@RequestBody Book book) {
-		LOGGER.info("Adding a new book");
-        return bookService.addBook(book);
-	}
-	
-	@RequestMapping(value = "/borrowuser/{user_id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/user/borrowuser/{user_id}", method = RequestMethod.PUT)
 	public Book borrowBookWithUser(@RequestBody Long book_id, @PathVariable Long user_id) {
 		LOGGER.info("A user is borrowing a book");
 		return bookService.borrowBook(user_id, book_id);
 	}
 	
-	@RequestMapping(value = "/return", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/return", method = RequestMethod.POST)
 	public Book returnBook(@RequestBody Long id) {
 		LOGGER.info("A user is returning a book");
 		return bookService.returnBook(id);
 	}
-	
-	@RequestMapping(value = "/delete", method = RequestMethod.PUT)
+		
+	@RequestMapping(value = "/admin/add", method= RequestMethod.POST)
+	public Book addBook(@RequestBody Book book) {
+		LOGGER.info("Adding a new book");
+        return bookService.addBook(book);
+	}
+
+	@RequestMapping(value = "/admin/delete", method = RequestMethod.PUT)
 	public Book deleteBook(@RequestBody Long id) {
 		LOGGER.info("The admin is deleting a book");
 		return bookService.deleteBook(id);

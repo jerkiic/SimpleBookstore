@@ -47,7 +47,7 @@
 			id="dispayBorrowedBooks"
 			method="GET"
 			content-type="application/json"
-			url="books/all/borrowed/{{borrowerId}}"
+			url="books/user/all/borrowed/{{borrowerId}}"
 			last-response="{{books}}"></iron-ajax>
 		<iron-ajax
 			auto
@@ -61,7 +61,7 @@
 			id="returnBook"
 			method="POST"
 			content-type="application/json"
-			url="books/return"
+			url="books/user/return"
 			on-response ="_handleResponse"></iron-ajax>
 	</template>
 	<script>
