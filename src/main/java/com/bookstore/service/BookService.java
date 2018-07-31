@@ -43,14 +43,14 @@ public class BookService {
 		return retVal;
 	}*/
 	
-	@Transactional(readOnly=true)
+	@Transactional(readOnly=true, isolation=Isolation.REPEATABLE_READ)
 	public List<Book> findAll() {
 		LOGGER.info(bookRepo.findByStatus(true).toString());
 		return bookRepo.findByStatus(true);
 		
 	}
 	
-	@Transactional
+	@Transactional(isolation=Isolation.READ_COMMITTED)
 	public Book addBook(Book book) {
 		Book returnValue;
 		Book oldBook = bookRepo.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
@@ -65,7 +65,7 @@ public class BookService {
 		return returnValue;
 	}
 	
-	@Transactional(isolation=Isolation.READ_COMMITTED)
+	@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor=BookNotFoundException.class)
 	public Book borrowBook(Long user_id, Long book_id) {
 		Book book = bookRepo.findById(book_id).orElseThrow(BookNotFoundException::new);
 		User user = userRepo.findById(user_id).orElseThrow(UserNotFoundException::new);
@@ -74,7 +74,8 @@ public class BookService {
 		LOGGER.info("User: "+user.getName()+" is borrowing book:"+book.getTitle());
 		return bookRepo.save(book);
 	}
-
+	
+	@Transactional()
 	public Book returnBook(Long id) {
 		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
 		LOGGER.info("User: "+book.getBorrower().getName()+" is returning book:"+book.getTitle());
@@ -83,7 +84,7 @@ public class BookService {
 		return bookRepo.save(book);
 	}
 
-	@Transactional(isolation=Isolation.READ_COMMITTED)
+	@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor=BookNotFoundException.class)
 	public Book deleteBook(Long id) {
 		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
 		LOGGER.info("Admin is deleting the book:"+book.getTitle());

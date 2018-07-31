@@ -65,44 +65,39 @@
 					<paper-input name="author" id="author" label="Author"></paper-input>
 				</div>
 				<div class="buttons">
-				    <paper-button class="dismiss" dialog-dismiss on-tap="_cancel">Cancel</paper-button>
+				    <paper-button class="dismiss" dialog-dismiss on-tap="_clear">Cancel</paper-button>
 				    <paper-button class="accept" dialog-confirm on-tap="_submit">Add</paper-button>
 				</div>
 		  	</div>
 		</paper-dialog>
 		<div class = "content">
 			<vaadin-grid id="displayAllBooksTable" items="{{books}}">
-					<vaadin-grid-column width="35%">
-						<template class="header">Title</template>
-						<template>{{item.title}}</template>
-					</vaadin-grid-column>
-					<vaadin-grid-column	width="35%">
-						<template class="header">Author</template>
-						<template>{{item.author}}</template>
-					</vaadin-grid-column>
-					<vaadin-grid-column width="10px">
-						<template class="header"></template>
+				<vaadin-grid-column width="35%">
+					<template class="header">Title</template>
+					<template>{{item.title}}</template>
+				</vaadin-grid-column>
+				<vaadin-grid-column	width="35%">
+					<template class="header">Author</template>
+					<template>{{item.author}}</template>
+				</vaadin-grid-column>
+				<vaadin-grid-column width="10px">
+					<template class="header"></template>
+					<template>
 						<template is="dom-if" if="{{_equals(token,'user')}}">
-							<template>
-								<template is="dom-if" if="{{_isNull(item.borrower_id)}}">
-									<paper-button raised class="borrowBtn" on-tap="_borrowBook" book_id="{{item.id}}" id="{{item.id}}">Borrow</paper-button>
-								</template>
-								<template is="dom-if" if="{{!_isNull(item.borrower_id)}}">
-										<paper-button disabled class="disabled">Borrowed</paper-button>
-								</template>
+							<template is="dom-if" if="{{_isNull(item.borrower_id)}}">
+								<paper-button raised class="borrowBtn" on-tap="_borrowBook" id="{{item.id}}">Borrow</paper-button>
 							</template>
 						</template>
 						<template is="dom-if" if="{{_equals(token,'admin')}}">
-							<template>
-								<template is="dom-if" if="{{_isNull(item.borrower_id)}}">
-									<paper-button raised class="deleteBtn" on-tap="_deleteBook" book_id="{{item.id}}" id="{{item.id}}">Delete</paper-button>
-								</template>
-								<template is="dom-if" if="{{!_isNull(item.borrower_id)}}">
-										<paper-button disabled class="disabled">Borrowed</paper-button>
-								</template>
+							<template is="dom-if" if="{{_isNull(item.borrower_id)}}">
+								<paper-button raised class="deleteBtn" on-tap="_deleteBook" id="{{item.id}}">Delete</paper-button>
 							</template>
 						</template>
-					</vaadin-grid-column>
+						<template is="dom-if" if="{{!_isNull(item.borrower_id)}}">
+							<paper-button disabled class="disabled">Borrowed</paper-button>
+						</template>
+					</template>
+				</vaadin-grid-column>
 			</vaadin-grid>
 		</div>
 		<iron-ajax
@@ -119,7 +114,7 @@
 			method="GET"
 			content-type="application/json"
 			url="login/token"
-			on-response="_consoleTok"
+			on-response="_handleToken"
 			></iron-ajax>	
 		<iron-ajax
 			id="addBook"
@@ -128,7 +123,6 @@
 			content-type="application/json"
 			url="books/add"
 			></iron-ajax>
-			
 		<iron-ajax
 			id="borrowBook"
 			method="PUT"
@@ -167,27 +161,26 @@
     		var addBookRequest = {};
     		addBookRequest.title = this.$.title.value;
     		addBookRequest.author= this.$.author.value;
-    		this.$.title.value=null;
-    		this.$.author.value=null;
     		console.log(addBookRequest);
     		
     		this.$.addBook.body = JSON.stringify(addBookRequest);
     		this.$.addBook.generateRequest(); 
+    		this._clear();
     	},
     	
-    	_cancel: function(){
+    	_clear: function(){
     		this.$.title.value=null;
     		this.$.author.value=null;
     	},
     	
-    	_consoleTok: function(e){
+    	_handleToken: function(e){
     		/* console.log(e.detail.response); */
     		this.set("borrowerId",e.detail.response.id)
     		this.set("token",e.detail.response.role);
     	},
     	
     	_equals:function(a,b){
-    		console.log(a==b);
+    		/* console.log(a==b); */
    			return a==b; 
     	},
     	
@@ -210,7 +203,7 @@
     	},
     	
     	_isNull: function(param){
-    		console.log(param);
+    		/* console.log(param); */
     		return param==null;
     	}
     	});	

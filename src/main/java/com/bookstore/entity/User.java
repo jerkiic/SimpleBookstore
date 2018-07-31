@@ -2,10 +2,13 @@ package com.bookstore.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,9 +24,9 @@ public class User {
 	
 	private String role;
 
-	@OneToMany(mappedBy = "borrower")
-/**	@JoinTable(name = "book_record", joinColumns= {@JoinColumn(name="borrower_id", referencedColumnName="id")},
-	inverseJoinColumns= {@JoinColumn(name="book_id",referencedColumnName="id")}) **/
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinTable(name = "book_record", joinColumns= {@JoinColumn(name="borrower_id", referencedColumnName="id")},
+	inverseJoinColumns= {@JoinColumn(name="book_id",referencedColumnName="id")})
 	private List<Book> borrowedBooks;
 	
 //	@ManyToMany(cascade=CascadeType.ALL)
@@ -39,6 +42,7 @@ public class User {
 	public List<Book> getBook() {
 		return borrowedBooks;
 	}
+	
 	@JsonIgnore
 	public void setBook(List<Book> book) {
 		this.borrowedBooks = book;
@@ -68,6 +72,4 @@ public class User {
 	}
 
 	public User() {}
-	
-	
 }

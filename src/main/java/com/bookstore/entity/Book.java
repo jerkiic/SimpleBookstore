@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -25,14 +26,12 @@ public class Book {
 	private boolean status = true;
 
 
-	
-	//	@JoinTable(name = "book_record", joinColumns = {@JoinColumn(name = "book_id", referencedColumnName="id")},
-	//	inverseJoinColumns = {@JoinColumn(name = "borrower_id", referencedColumnName = "id")})
 	@JsonProperty("borrower_id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
+	@JoinTable(name = "book_record", joinColumns = {@JoinColumn(name = "book_id", referencedColumnName="id")},
+			inverseJoinColumns = {@JoinColumn(name = "borrower_id", referencedColumnName = "id")})
 	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "user_id")
 	private User borrower;
 
 	@JsonIgnore

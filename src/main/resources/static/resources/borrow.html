@@ -44,8 +44,7 @@
 		</div>
 		
 		<iron-ajax
-			auto
-			id="displayBrwBooks"
+			id="dispayBorrowedBooks"
 			method="GET"
 			content-type="application/json"
 			url="books/all/borrowed/{{borrowerId}}"
@@ -56,7 +55,7 @@
 			method="GET"
 			content-type="application/json"
 			url="login/token"
-			on-response="_consoleTok"
+			on-response="_handleToken"
 			></iron-ajax>	
 		<iron-ajax
 			id="returnBook"
@@ -82,13 +81,14 @@
 	    	},
 	    	
 	    	_handleResponse: function(){
-	    		this.$.displayBrwBooks.generateRequest();
+	    		this.$.dispayBorrowedBooks.generateRequest();
 	    	},
 	    	
-	    	_consoleTok: function(e){
+	    	_handleToken: function(e){
 	    		/* console.log(e.detail.response); */
 	    		this.set("borrowerId",e.detail.response.id);
 	    		this.set("token",e.detail.response.role);
+	    		this._handleResponse();
 	    	}
 		});
 	</script>
