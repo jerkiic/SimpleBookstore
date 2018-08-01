@@ -2,6 +2,8 @@ package com.bookstore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,16 +20,18 @@ public class UserController {
 	@Autowired
 	private User user=new User();
 	
-	@RequestMapping(value="/user")
-	public User loginAsUser() {
-		user = userService.findUser();
-		return userService.findUser();	
+//	private Set<Role> role= new HashSet<Role>();
+	
+	@RequestMapping(value="/user/{id}")
+	public User loginAsUser(@PathVariable Long id) {
+		user = userService.login(id);
+		return userService.login(id);	
 	}
 	
-	@RequestMapping(value="/admin")
-	public User loginAsAdmin() {
-		user = userService.findAdmin();
-		return userService.findAdmin();	
+	@RequestMapping(value="/admin/{id}")
+	public User loginAsAdmin(@PathVariable Long id) {
+		user = userService.login(id);
+		return userService.login(id);	
 	}
 	
 	@Bean
@@ -35,4 +39,7 @@ public class UserController {
 	public User getToken(){
 		return user;
 	}
+	
+	@RequestMapping()
+	public void login(@RequestBody User user) {}
 }

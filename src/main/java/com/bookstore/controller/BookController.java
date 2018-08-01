@@ -19,44 +19,44 @@ import com.bookstore.service.BookService;
 public class BookController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
-	
+
 	@Autowired
 	private BookService bookService;
-	
+		
 	@RequestMapping("/all")
-    public List<Book> findAllBook() {
+	public List<Book> findAllBook() {
 		LOGGER.info("Find all available books");
-        return bookService.findAll();
-    }
-	
-	@RequestMapping(value="/user/all/borrowed/{id}")
-    public List<Book> findAllBorrowedBook(@PathVariable Long id) {
+		return bookService.findAll();
+	}
+
+	@RequestMapping(value = "/user/all/borrowed/{id}")
+	public List<Book> findAllBorrowedBook(@PathVariable Long id) {
 		LOGGER.info("Find all borrowed book/s by a user");
-        return bookService.findAllBorrowedBook(id);
-    }
-	
+		return bookService.findAllBorrowedBook(id);
+	}
+
 	@RequestMapping(value = "/user/borrowuser/{user_id}", method = RequestMethod.PUT)
 	public Book borrowBookWithUser(@RequestBody Long book_id, @PathVariable Long user_id) {
 		LOGGER.info("A user is borrowing a book");
 		return bookService.borrowBook(user_id, book_id);
 	}
-	
+
 	@RequestMapping(value = "/user/return", method = RequestMethod.POST)
 	public Book returnBook(@RequestBody Long id) {
 		LOGGER.info("A user is returning a book");
 		return bookService.returnBook(id);
 	}
-		
-	@RequestMapping(value = "/admin/add", method= RequestMethod.POST)
+
+	@RequestMapping(value = "/admin/add", method = RequestMethod.POST)
 	public Book addBook(@RequestBody Book book) {
 		LOGGER.info("Adding a new book");
-        return bookService.addBook(book);
+		return bookService.addBook(book);
 	}
-
+	
 	@RequestMapping(value = "/admin/delete", method = RequestMethod.PUT)
 	public Book deleteBook(@RequestBody Long id) {
 		LOGGER.info("The admin is deleting a book");
 		return bookService.deleteBook(id);
 	}
-	
+
 }

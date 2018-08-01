@@ -1,6 +1,7 @@
 package com.bookstore.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,9 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 public class User {
@@ -21,36 +27,45 @@ public class User {
 	private Long id;
 	
 	private String name;
-	
-	private String role;
+//	private String password;
 
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinTable(name = "book_record", joinColumns= {@JoinColumn(name="borrower_id", referencedColumnName="id")},
 	inverseJoinColumns= {@JoinColumn(name="book_id",referencedColumnName="id")})
 	private List<Book> borrowedBooks;
 	
+	@JsonProperty("role")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+    @JsonIdentityReference(alwaysAsId = true)
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(
+			name="user_roles",
+			joinColumns = @JoinColumn(
+					name = "user_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(
+					name = "role_id", referencedColumnName = "id"))	
+	private Set<Role> role;
 	
-/*//	@JsonProperty("role")
-//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
-//    @JsonIdentityReference(alwaysAsId = true)
-//	@ManyToMany(cascade=CascadeType.ALL)
-//	@JoinTable(
-//			name="user_roles",
-//			joinColumns = @JoinColumn(
-//					name = "user_id", referencedColumnName = "id"),
-//			inverseJoinColumns = @JoinColumn(
-//					name = "role_id", referencedColumnName = "id"))	
-//	private Set<Role> role;
-	
-//	@JsonIgnore
-//	public Set<Role> getRole() {
-//		return role;
-//	}
-//	@JsonIgnore
-//	public void setRoles(Set<Role> role) {
-//		this.role = role;
-//	}
-*/
+	public User() {}
+
+	public User(User user) {
+		super();
+		this.id = user.getId();
+		this.name = user.getName();
+//		this.password = user.getPassword();
+		this.borrowedBooks = user.getBook();
+		this.role = user.getRole();
+	}
+
+	@JsonIgnore
+	public Set<Role> getRole() {
+		return role;
+	}
+	@JsonIgnore
+	public void setRoles(Set<Role> role) {
+		this.role = role;
+	}
+
 	@JsonIgnore
 	public List<Book> getBook() {
 		return borrowedBooks;
@@ -76,13 +91,4 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public User() {}
 }

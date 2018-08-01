@@ -8,7 +8,7 @@
 	<template>	
 		<paper-tabs selected="{{selectedPage}}" attr-for-selected="tab-name">
 			<paper-tab tab-name="list">List of Books</paper-tab>
-			<template is="dom-if" if="{{_equals(token,'user')}}">
+			<template is="dom-if" if="{{_getRole(token,'USER')}}">
 				<paper-tab tab-name="brwBooks">Your Books</paper-tab>
 			</template>
 		</paper-tabs>
@@ -39,7 +39,7 @@
 				
 				properties: {
 					token:{
-						type: String,
+						type: Array,
 						notify: true
 					}
 				},
@@ -59,7 +59,14 @@
 		         _handleToken: function(e){
 			    		/* console.log(e.detail.response); */
 			    		this.set("token",e.detail.response.role); 
+			    		console.log(this.token)
 				},
+				
+				_getRole: function(role, value){
+						if(role.length==2) return true;
+						return role[0]==value;
+				}
+				
 			});
 		</script>
 </dom-module>

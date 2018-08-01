@@ -28,14 +28,14 @@
 			id="loginUser"
 			method="GET"
 			content-type="application/json"
-			url="/login/user"
+			url="/login/user/3"
 			on-response="_responseLogin"></iron-ajax>
 			
 		<iron-ajax 
 			id="loginAdmin"
 			method="GET"
 			content-type="application/json"
-			url="/login/admin"
+			url="/login/admin/2"
 			on-response="_responseLogin"></iron-ajax>
 		<template is="dom-if" if="{{hasLogged}}">
 			<navigator-ui></navigator-ui>

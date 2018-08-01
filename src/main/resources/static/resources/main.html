@@ -54,7 +54,7 @@
 		<app-layout>
 			<h1>Simple Bookstore</h1>
 		</app-layout>
-		<template is="dom-if" if="{{_equals(token,'admin')}}">			
+		<template is="dom-if" if="{{_getRole(token,'ADMIN')}}">			
 			<paper-button raised on-tap="showDialog">Add Book</paper-button>			
 		</template>
 		<paper-dialog id="dialog" heading="Add A Book" class="dialog">
@@ -83,12 +83,12 @@
 				<vaadin-grid-column width="10px">
 					<template class="header"></template>
 					<template>
-						<template is="dom-if" if="{{_equals(token,'user')}}">
+						<template is="dom-if" if="{{_getRole(token,'USER')}}">
 							<template is="dom-if" if="{{_isNull(item.borrower_id)}}">
 								<paper-button raised class="borrowBtn" on-tap="_borrowBook" id="{{item.id}}">Borrow</paper-button>
 							</template>
 						</template>
-						<template is="dom-if" if="{{_equals(token,'admin')}}">
+						<template is="dom-if" if="{{_getRole(token,'ADMIN')}}">
 							<template is="dom-if" if="{{_isNull(item.borrower_id)}}">
 								<paper-button raised class="deleteBtn" on-tap="_deleteBook" id="{{item.id}}">Delete</paper-button>
 							</template>
@@ -144,7 +144,7 @@
     	
     	properties:{
     		token: {
-    			type: String,
+    			type: Array,
     			notify: true
     		},
     		borrowerId: {
@@ -179,9 +179,9 @@
     		this.set("token",e.detail.response.role);
     	},
     	
-    	_equals:function(a,b){
-    		/* console.log(a==b); */
-   			return a==b; 
+    	_getRole:function(role, value){
+    		if(role.length==2) return true;
+   			return role[0]==value; 
     	},
     	
     	_handleResponse: function(){

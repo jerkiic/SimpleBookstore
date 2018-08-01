@@ -8,17 +8,23 @@ import com.bookstore.exception.UserNotFoundException;
 import com.bookstore.repository.UserRepository;
 
 @Service
-public class UserService {
+public class UserService{
 
 	@Autowired
 	private UserRepository userRepo;
 	
-	public User findUser() {
-		return userRepo.findByRole("user").orElseThrow(UserNotFoundException::new);
+	public User login(Long id) {
+		return userRepo.findById(id).orElseThrow(UserNotFoundException::new);
 	}
-
-	public User findAdmin() {
-		return userRepo.findByRole("admin").orElseThrow(UserNotFoundException::new);
-	}
+	
+//	public User login(User user) {
+//		return user;
+//	}
+//	
+//	@Override
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//		User userInService = userRepo.findByName(username).orElseThrow(UserNotFoundException::new);
+//		return new UserDetailsImpl(userInService);
+//	}
 
 }
