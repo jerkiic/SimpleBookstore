@@ -12,5 +12,5 @@ import com.bookstore.entity.User;
 public interface BookRepository extends CrudRepository<Book, Long>{
 	 List<Book> findByStatus(boolean status);
 	 Book findByTitleAndAuthor(String title, String author);
-	 List<Book> findAllByBorrower(User id);
+	 List<Book> findByBorrower(User id);
 }

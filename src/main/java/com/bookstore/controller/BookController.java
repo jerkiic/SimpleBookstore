@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bookstore.entity.Book;
 import com.bookstore.service.BookService;
+import com.bookstore.service.UserService;
 
 @RestController
 @RequestMapping("/books")
@@ -22,6 +23,9 @@ public class BookController {
 
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private UserService userService;
 		
 	@RequestMapping("/all")
 	public List<Book> findAllBook() {
@@ -32,7 +36,7 @@ public class BookController {
 	@RequestMapping(value = "/user/all/borrowed/{id}")
 	public List<Book> findAllBorrowedBook(@PathVariable Long id) {
 		LOGGER.info("Find all borrowed book/s by a user");
-		return bookService.findAllBorrowedBook(id);
+		return bookService.findAllBorrowedBook(userService.getUser(id));
 	}
 
 	@RequestMapping(value = "/user/borrowuser/{user_id}", method = RequestMethod.PUT)
@@ -44,7 +48,7 @@ public class BookController {
 	@RequestMapping(value = "/user/return", method = RequestMethod.POST)
 	public Book returnBook(@RequestBody Long id) {
 		LOGGER.info("A user is returning a book");
-		return bookService.returnBook(id);
+		return bookService.returnBook(bookService.getBook(id));
 	}
 
 	@RequestMapping(value = "/admin/add", method = RequestMethod.POST)

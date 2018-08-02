@@ -13,7 +13,7 @@ public class UserService{
 	@Autowired
 	private UserRepository userRepo;
 	
-	public User login(Long id) {
+	public User getUser(Long id) {
 		return userRepo.findById(id).orElseThrow(UserNotFoundException::new);
 	}
 	

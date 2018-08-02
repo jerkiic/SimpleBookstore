@@ -30,18 +30,10 @@ public class BookService {
 		this.bookRepo = bookRepo;
 		this.userRepo = userRepo;
 	}
-
-	/*@Transactional
-	public List<Book> findAllBooksUser() {
-		List<Book> book = bookRepo.findByStatus(Status.ACTIVE);
-		List<Book> retVal = new ArrayList<>();
-		for (Book iterator : book) {
-			if (iterator.getBorrower() == null)
-				retVal.add(iterator);
-			LOGGER.info("Found book: " + iterator.getTitle());
-		}
-		return retVal;
-	}*/
+	
+	public Book getBook(Long id) {
+		return bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
+	}
 	
 	@Transactional(readOnly=true, isolation=Isolation.REPEATABLE_READ)
 	public List<Book> findAll() {
@@ -69,18 +61,16 @@ public class BookService {
 	public Book borrowBook(Long user_id, Long book_id) {
 		Book book = bookRepo.findById(book_id).orElseThrow(BookNotFoundException::new);
 		User user = userRepo.findById(user_id).orElseThrow(UserNotFoundException::new);
-		book.setStatus(true);
 		book.setBorrower(user);
 		LOGGER.info("User: "+user.getName()+" is borrowing book:"+book.getTitle());
 		return bookRepo.save(book);
 	}
 	
 	@Transactional()
-	public Book returnBook(Long id) {
-		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
+	public Book returnBook(Book book) {
+//		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
 		LOGGER.info("User: "+book.getBorrower().getName()+" is returning book:"+book.getTitle());
 		book.setBorrower(null);
-		book.setStatus(true);
 		return bookRepo.save(book);
 	}
 
@@ -92,24 +82,9 @@ public class BookService {
 		return bookRepo.save(book);
 	}
 
-	/*public List<Book> findAllBorrowedBook(Long id) {
-		List<Book> book = bookRepo.findByStatus(Status.BORROWED);
-		List<Book> retVal = new ArrayList<>();
-		for (Book iterator : book) {
-			if (iterator.getBorrower().getId() == id) {
-				retVal.add(iterator);
-				// for checking purposes only
-				System.out.println(iterator.getTitle());
-				System.out.println("find all borrowed book");
-			}
-		}
-		return retVal;
-	}*/
-	
 	@Transactional(readOnly=true)
-	public List<Book> findAllBorrowedBook(Long id){
-		User user = userRepo.findById(id).orElseThrow(UserNotFoundException::new);
-		return bookRepo.findAllByBorrower(user);
+	public List<Book> findAllBorrowedBook(User user){
+		return bookRepo.findByBorrower(user);
 	}
 
 }

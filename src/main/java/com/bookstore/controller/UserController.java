@@ -24,14 +24,14 @@ public class UserController {
 	
 	@RequestMapping(value="/user/{id}")
 	public User loginAsUser(@PathVariable Long id) {
-		user = userService.login(id);
-		return userService.login(id);	
+		user = userService.getUser(id);
+		return userService.getUser(id);	
 	}
 	
 	@RequestMapping(value="/admin/{id}")
 	public User loginAsAdmin(@PathVariable Long id) {
-		user = userService.login(id);
-		return userService.login(id);	
+		user = userService.getUser(id);
+		return userService.getUser(id);	
 	}
 	
 	@Bean
