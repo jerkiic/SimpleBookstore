@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bookstore.entity.Book;
 import com.bookstore.entity.User;
+import com.bookstore.exception.BookIsBorrowedException;
 import com.bookstore.repository.BookRepository;
 import com.bookstore.service.BookService;
 
@@ -51,7 +52,6 @@ public class BookServiceTest {
 		List<Book> bookList = new ArrayList<>();
 		bookList.add(book);
 		when(bookRepo.findByStatus(true)).thenReturn(bookList);
-		System.out.println(bookService.findAll());
 		assertThat(bookService.findAll()).isEqualTo(bookList);
 	}
 	
@@ -70,9 +70,8 @@ public class BookServiceTest {
 	public void whenABookIsBorrowed_thenStillDisplay() {
 		List<Book> bookList = new ArrayList<>();
 		bookList.add(book);
-		book.setBorrower(user);
 		when(bookRepo.findByBorrower(user)).thenReturn(bookList);
-		assertThat(bookService.findAllBorrowedBook(user)).contains(book);
+		assertThat(bookService.findAllBorrowedBook(user)).containsAll(bookList);
 	}
 	
 	@Test
@@ -83,7 +82,28 @@ public class BookServiceTest {
 	}
 	
 	@Test
-	public void bookIsAvailable_thenCanBeBorrowed() {
-		
+	public void whenBookIsAvailable_thenCanBeBorrowed() {
+		when(bookRepo.save(book)).thenReturn(book);
+		assertThat(bookService.borrowBook(user, book)).isEqualTo(book);
 	}
+	
+	@Test
+	public void whenBookIsDeleted() {
+		when(bookRepo.save(book)).thenReturn(book);
+		assertThat(bookService.deleteBook(book)).isEqualTo(book);
+	}
+	
+	@Test(expected = BookIsBorrowedException.class)
+	public void whenBookIsBorrowed_theCantBeBorrowed() {
+		when(bookRepo.save(book)).thenReturn(book);
+		book.setBorrower(user);
+		bookService.borrowBook(user, book);
+	}
+	
+	@Test
+	public void whenBookIsReturned_thenNotInBorrowedBooks() {
+		when(bookRepo.save(book)).thenReturn(book);
+		assertThat(bookService.findAllBorrowedBook(user)).doesNotContain(book);
+	}
+	
 }

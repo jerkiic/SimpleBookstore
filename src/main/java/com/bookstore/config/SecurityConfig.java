@@ -21,35 +21,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.permitAll()
      	.and().csrf().disable();
 		http.headers().frameOptions().disable();
-//		http.authorizeRequests()
-//				.antMatchers("/books/**").hasAnyRole("ADMIN","USER")
-//				.anyRequest().permitAll()
-//				.and()
-//				.formLogin().loginPage("/").loginProcessingUrl("/login")
-//				.usernameParameter("name").passwordParameter("password")
-//				.defaultSuccessUrl("/books/all")
-//				.and()
-//				.logout().logoutUrl("/logout").logoutSuccessUrl("/")
-//				.permitAll().and().csrf().disable();
 	}
-     
-	/**@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-			 
-		auth.userDetailsService(userDetailsService)
-			.passwordEncoder(getPasswordEncoder());
-	}
-	
-	private PasswordEncoder getPasswordEncoder() {
-		return new PasswordEncoder(){
-			@Override
-			public String encode(CharSequence rawPassword) {
-				return null;
-			}
-			@Override
-			public boolean matches(CharSequence rawPassword, String encodedPassword) {
-				return true;
-			}
-		};
-	}**/
 }

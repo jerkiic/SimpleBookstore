@@ -4,8 +4,9 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import"  href="../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
 
 <dom-module id="main-ui">
 	<template>
@@ -100,6 +101,9 @@
 				</vaadin-grid-column>
 			</vaadin-grid>
 		</div>
+		<template>
+			<paper-toast id="toasterId" text="{{message}}"></paper-toast>
+		</template>
 		<iron-ajax
 			auto
 			id="displayAllBooks"
@@ -147,6 +151,12 @@
     			type: Array,
     			notify: true
     		},
+    		
+    		message:{
+    			type: String,
+    			notify: true
+    		},
+    		
     		borrowerId: {
     			type: Number,
     			notify: true
@@ -184,7 +194,8 @@
    			return role[0]==value; 
     	},
     	
-    	_handleResponse: function(){
+    	_handleResponse: function(e){
+    		this.set("message", e.detail.response.title);
     		this.$.displayAllBooks.generateRequest();
     	},
     	

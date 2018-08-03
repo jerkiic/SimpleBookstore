@@ -3,7 +3,6 @@ package com.bookstore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +39,4 @@ public class UserController {
 		return user;
 	}
 	
-	@RequestMapping()
-	public void login(@RequestBody User user) {}
 }

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bookstore.entity.Book;
 import com.bookstore.entity.User;
 import com.bookstore.exception.BookNotFoundException;
-import com.bookstore.exception.UserNotFoundException;
+import com.bookstore.exception.BookIsBorrowedException;
 import com.bookstore.repository.BookRepository;
 import com.bookstore.repository.UserRepository;
 
@@ -23,12 +23,10 @@ public class BookService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
 
 	private BookRepository bookRepo;
-	private UserRepository userRepo;
 
 	public BookService(BookRepository bookRepo, UserRepository userRepo) {
 		super();
 		this.bookRepo = bookRepo;
-		this.userRepo = userRepo;
 	}
 	
 	public Book getBook(Long id) {
@@ -57,16 +55,20 @@ public class BookService {
 		return returnValue;
 	}
 	
-	@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor=BookNotFoundException.class)
-	public Book borrowBook(Long user_id, Long book_id) {
-		Book book = bookRepo.findById(book_id).orElseThrow(BookNotFoundException::new);
-		User user = userRepo.findById(user_id).orElseThrow(UserNotFoundException::new);
+	@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor=Exception.class)
+	public Book borrowBook(User user, Book book) {
+//		Book book = bookRepo.findById(book_id).orElseThrow(BookNotFoundException::new);
+//		User user = userRepo.findById(user_id).orElseThrow(UserNotFoundException::new);
+		if(book.getBorrower()!=null) {
+			LOGGER.warn("WARNING:........ THE BOOK IS CURRENTLY BEING BORROWED");
+			throw new BookIsBorrowedException("THE BOOK IS CURRENTLY BEING BORROWED");
+		}
 		book.setBorrower(user);
 		LOGGER.info("User: "+user.getName()+" is borrowing book:"+book.getTitle());
 		return bookRepo.save(book);
 	}
 	
-	@Transactional()
+	@Transactional(rollbackFor=Exception.class)
 	public Book returnBook(Book book) {
 //		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
 		LOGGER.info("User: "+book.getBorrower().getName()+" is returning book:"+book.getTitle());
@@ -74,9 +76,9 @@ public class BookService {
 		return bookRepo.save(book);
 	}
 
-	@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor=BookNotFoundException.class)
-	public Book deleteBook(Long id) {
-		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
+	@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor=Exception.class)
+	public Book deleteBook(Book book) {
+//		Book book = bookRepo.findById(id).orElseThrow(BookNotFoundException::new);
 		LOGGER.info("Admin is deleting the book: "+book.getTitle());
 		book.setStatus(false);
 		return bookRepo.save(book);

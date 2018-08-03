@@ -42,7 +42,7 @@ public class BookController {
 	@RequestMapping(value = "/user/borrowuser/{user_id}", method = RequestMethod.PUT)
 	public Book borrowBookWithUser(@RequestBody Long book_id, @PathVariable Long user_id) {
 		LOGGER.info("A user is borrowing a book");
-		return bookService.borrowBook(user_id, book_id);
+		return bookService.borrowBook(userService.getUser(user_id), bookService.getBook(book_id));
 	}
 
 	@RequestMapping(value = "/user/return", method = RequestMethod.POST)
@@ -60,7 +60,7 @@ public class BookController {
 	@RequestMapping(value = "/admin/delete", method = RequestMethod.PUT)
 	public Book deleteBook(@RequestBody Long id) {
 		LOGGER.info("The admin is deleting a book");
-		return bookService.deleteBook(id);
+		return bookService.deleteBook(bookService.getBook(id));
 	}
 
 }
